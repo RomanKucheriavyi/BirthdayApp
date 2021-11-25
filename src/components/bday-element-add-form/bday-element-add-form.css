@@ -1,10 +1,38 @@
-input:invalid {
-    color: red;
-}
-
 [type="date"]::-webkit-inner-spin-button {
   display: none;
 }
 [type="date"]::-webkit-calendar-picker-indicator {
   display: none;
 }
+
+
+.form-control.is-invalid {
+  padding-right: 0.75rem;
+}
+
+
+
+.btn { 
+  height: 100%;
+  margin-left: 2px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

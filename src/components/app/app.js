@@ -22,14 +22,11 @@ export default class App extends Component {
 
 
 
-    createBdayItem (name, surname, fullDate, day, month, year){
+    createBdayItem (name, surname, fullDate){
         return {
             name,
             surname,
             fullDate,
-            day,
-            month,
-            year,
             id: this.lastBdayItemId++
         }
     }
@@ -45,8 +42,8 @@ export default class App extends Component {
         });
     };
 
-    addBdayItem = (name, surname, fullDate, day, month, year) => {
-        const newItem = this.createBdayItem(name, surname, fullDate, day, month, year);
+    addBdayItem = (name, surname, fullDate) => {
+        const newItem = this.createBdayItem(name, surname, fullDate);
         
         this.setState(({birthdayData}) => {
             const newData = [...birthdayData, newItem]
@@ -55,7 +52,7 @@ export default class App extends Component {
                 birthdayData: newData
             };
         });
-        console.log(newItem);
+        console.table(newItem);
     };
 
     searchPerson(birthdayData, searchText){
@@ -82,11 +79,12 @@ export default class App extends Component {
         return (
             <div className = "app">
                 <Headline />
+                <div>sosi loh</div>
                 <div className = "top-panel d-flex">
                     <Searcher onSearchChange = {this.onSearchChange} />
                     <BdayFilter />
                 </div>
-                <BdayList 
+                <BdayList
                     bdayData = {visibleData}
                     onDelete = {this.deleteBdayItem} />
                 <BdayElementAddForm onAdd = {this.addBdayItem} />

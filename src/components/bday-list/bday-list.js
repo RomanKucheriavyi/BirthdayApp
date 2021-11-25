@@ -30,7 +30,7 @@ const BdayList = ({bdayData, onDelete}) => {
         return birthDate ? new Date(birthDate).getFullYear() : birthDate;
     }
 
-    function getOrdinalNumber (number) {
+    function getOrdinalNumber (number) {//test
         const suffix = ["th","st","nd","rd"];
         const v = number % 100;
         return `${number}-${(suffix[(v-20)%10] || suffix[v] || suffix[0])}`;
@@ -40,13 +40,13 @@ const BdayList = ({bdayData, onDelete}) => {
         if (today.getMonth() > bday.getMonth()) {
             return true;
         }
-        if (today.getMonth() == bday.getMonth() && today.getDate() > bday.getDate()) {
+        if (today.getMonth() === bday.getMonth() && today.getDate() > bday.getDate()) {
             return true;
         }
         return false;
     }
 
-    function getDaysToBday (birthDate) {
+    function getDaysToBday (birthDate) {//test
         const today = new Date();
         const bday = new Date(birthDate);
         const millisInDay = 86400000;
@@ -93,4 +93,6 @@ const BdayList = ({bdayData, onDelete}) => {
 };
 
 export default BdayList;
+
+
 
