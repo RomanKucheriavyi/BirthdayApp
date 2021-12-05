@@ -5,31 +5,20 @@ import BdayFilter from "../bday-filter/bday-filter";
 import BdayList from "../bday-list/bday-list";
 import Searcher from "../searcher/searcher";
 import "./app.css";
+import { createBdayItem, filterItems, searchPerson } from "../../logic/app-helper";
 
 
 export default class App extends Component {
 
-    lastBdayItemId = 0;
-
     state = {
         birthdayData:[
-            this.createBdayItem("Xuy", "Pizda", "1488-10-22"),
-            this.createBdayItem("Loh", "Pidr", "1984-11-21"),
-            this.createBdayItem("Grh", "Goroh", "1337-5-21")
+            createBdayItem("Xuy", "Pizda", "1488-10-22"),
+            createBdayItem("Loh", "Pidr", "1984-11-21"),
+            createBdayItem("Grh", "Goroh", "1337-5-21")
         ],
-        searchText: ""
+        searchText: "",
+        filter: "all"
     };
-
-
-
-    createBdayItem (name, surname, fullDate){
-        return {
-            name,
-            surname,
-            fullDate,
-            id: this.lastBdayItemId++
-        }
-    }
 
     deleteBdayItem = (id) => {
         this.setState(({birthdayData}) => {
@@ -43,7 +32,7 @@ export default class App extends Component {
     };
 
     addBdayItem = (name, surname, fullDate) => {
-        const newItem = this.createBdayItem(name, surname, fullDate);
+        const newItem = createBdayItem(name, surname, fullDate);
         
         this.setState(({birthdayData}) => {
             const newData = [...birthdayData, newItem]
@@ -55,34 +44,25 @@ export default class App extends Component {
         console.table(newItem);
     };
 
-    searchPerson(birthdayData, searchText){
-        if (searchText.length === 0){
-            return birthdayData
-        }
-        return birthdayData.filter((item) => {
-            return (item.name
-                        .toLowerCase()
-                        .indexOf(searchText.toLowerCase()) > -1) 
-            || (item.surname
-                    .toLowerCase()
-                    .indexOf(searchText.toLowerCase()) > -1)
-        })
-    }  
-
     onSearchChange = (searchText) => {
         this.setState({searchText});
-    }
+    };
+
+    onFilterChange = (filter) => {
+        this.setState({ filter });
+    };
 
     render() {
-        const {birthdayData, searchText} = this.state;
-        const visibleData = this.searchPerson(birthdayData, searchText);
+        const {birthdayData, searchText, filter} = this.state;
+        const visibleData = filterItems(searchPerson(birthdayData, searchText), filter);
         return (
             <div className = "app">
                 <Headline />
-                <div>sosi loh</div>
                 <div className = "top-panel d-flex">
                     <Searcher onSearchChange = {this.onSearchChange} />
-                    <BdayFilter />
+                    <BdayFilter
+                        filter={filter}
+                        onFilterChange={this.onFilterChange} />
                 </div>
                 <BdayList
                     bdayData = {visibleData}

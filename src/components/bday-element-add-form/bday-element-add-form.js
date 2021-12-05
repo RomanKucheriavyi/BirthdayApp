@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { errorClass, toFormalise } from "../../logic/add-form-helper";
+import { validateDate } from "../../logic/date-helper";
 import "./bday-element-add-form.css"; 
 
 
@@ -11,62 +13,69 @@ export default class BdayElementAddForm extends Component {
         formErrors: {
             name:"",
             surname:"",
+            fullDate:""
         }, 
-        nameValid: false,
-        surnameValid: false,
-        formValid: false
+        isNameValid: false,
+        isSurnameValid: false,
+        isFullDateValid: false,
+        isFormValid: false
     }
-
 
     onNameChange = (event) => {
         const {name, value} = event.target;
         this.setState({
-            [name]: this
-                .toFormalise(value)
+            [name]: 
+                toFormalise(value)
                 .replace(/[^aA-zZ]/g,"")
-        }, () => { this.validateField(name, value) });
+        }, () => {this.validateField(name, value)});
+    
+        console.log([value]);
+    };
 
-        console.log([value])
-    }
+    validateForm() {
+        this.setState({
+            isFormValid: this.state.isNameValid && this.state.isSurnameValid && this.state.isFullDateValid});
+    };
 
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
-        let nameValid = this.state.nameValid;
-        let surnameValid = this.state.surnameValid;
-
+        let isNameValid = this.state.isNameValid;
+        let isSurnameValid = this.state.isSurnameValid;
+        let isFullDateValid = this.state.isFullDateValid;
+    
         switch(fieldName) {
             case "name":
-                nameValid = (value.length > 2);
-                fieldValidationErrors.name = nameValid ? "" : "name is too short";
+                isNameValid = (value.length > 2);
+                fieldValidationErrors.name = isNameValid ? "" : "name is too short";
                 break;
             case "surname":
-                surnameValid = (value.length > 2);
-                fieldValidationErrors.surname = surnameValid ? "": "surname is too short";
+                isSurnameValid = (value.length > 2);
+                fieldValidationErrors.surname = isSurnameValid ? "": "surname is too short";
+                break;
+            case "fullDate":
+                isFullDateValid = (validateDate(value));
+                fieldValidationErrors.fullDate = isFullDateValid ? "": "date is invalid";
                 break;
             default:
                 break;
         }
         this.setState({
             formErrors: fieldValidationErrors,
-            nameValid: nameValid,
-            surnameValid: surnameValid,
+            isNameValid: isNameValid,
+            isSurnameValid: isSurnameValid,
+            isFullDateValid: isFullDateValid
         }, this.validateForm);
-    }
-    
+    };
 
-    validateForm() {
-        this.setState({
-            formValid: this.state.nameValid && this.state.surnameValid});
-    }
 
     onDateChange = (event) => {
         const {name, value} = event.target;
         this.setState({
             [name]: value
-        })
+        }, () => {this.validateField(name, value)});
         console.log([value])
-    }
-
+    };
+    
     toSubmit = (event) => {
         event.preventDefault();
         this.props.onAdd(this.state.name, this.state.surname, this.state.fullDate);
@@ -74,16 +83,8 @@ export default class BdayElementAddForm extends Component {
             name: "",
             surname: "",
             fullDate: ""
-        })
-    }
-
-    toFormalise (name) {
-        return name ? name[0].toUpperCase() + name.slice(1).toLowerCase() : name;
-    }
-    
-    errorClass(error) {
-        return(error.length === 0 ? "" : "is-invalid");
-    }
+        });
+    };
 
     render(){
         const {name, surname, fullDate} = this.state;
@@ -92,52 +93,54 @@ export default class BdayElementAddForm extends Component {
                 onSubmit={this.toSubmit}>
                 
                 <div>      
-                <input
-                    type="text"
-                    placeholder="name"
-                    className={`form-control ${this.errorClass(this.state.formErrors.name)} add-name`}
-                    name="name"
-                    value={name}
-                    onChange={this.onNameChange} />
-                <div className="invalid-feedback">
-                    {this.state.formErrors.name}
-                </div>
+                    <input
+                        type="text"
+                        placeholder="Name"
+                        autoComplete="off"
+                        className={`form-control ${errorClass(this.state.formErrors.name)} add-name`}
+                        name="name"
+                        value={name}
+                        onChange={this.onNameChange} />
+                    <div className="invalid-feedback">
+                        {this.state.formErrors.name}
+                    </div>
                 </div>
 
                 <div>    
-                <input
-                    type="text"
-                    placeholder="surname"
-                    className={`form-control ${this.errorClass(this.state.formErrors.surname)} add-surname`}
-                    name="surname"
-                    value={surname}
-                    onChange={this.onNameChange} />
-                <div className="invalid-feedback">
-                    {this.state.formErrors.surname}
-                </div>   
+                    <input
+                        type="text"
+                        placeholder="Surname"
+                        autoComplete="off"
+                        className={`form-control ${errorClass(this.state.formErrors.surname)} add-surname`}
+                        name="surname"
+                        value={surname}
+                        onChange={this.onNameChange} />
+                    <div className="invalid-feedback">
+                        {this.state.formErrors.surname}
+                    </div>   
                 </div> 
 
                 <div>
-                <input
-                    type="date"
-                    min="1900-01-01"
-                    max={new Date().toISOString().split("T")[0]}
-                    required
-                    className="form-control add-date"
-                    name="fullDate"
-                    value={fullDate}
-                    onChange={this.onDateChange} />
+                    <input
+                        type="date"
+                        className={`form-control ${errorClass(this.state.formErrors.fullDate)} add-date`}
+                        name="fullDate"
+                        value={fullDate}
+                        onChange={this.onDateChange} />
+                    <div className="invalid-feedback">
+                        {this.state.formErrors.fullDate}
+                    </div>  
                 </div>
 
                 <button
                     type="submit"
                     className="btn btn-outline-secondary"
-                    disabled={!this.state.formValid}>
+                    disabled={!this.state.isFormValid}>
                     Add
                 </button>
             </form>
 
-        )
+        );
     };
 };
 

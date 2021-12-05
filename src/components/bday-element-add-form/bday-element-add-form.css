@@ -17,6 +17,15 @@
   margin-left: 2px;
 }
 
+input::placeholder {
+  transition: 0.5s; /* Время трансформации */
+  color: #aaa; /* Цвет подсказки */
+}
+
+input:focus::placeholder { 
+  font-size: 10px; /* Размер шрифта */
+  transform: translateY(-16px); /* Сдвигаем вверх */
+}
 
 
 

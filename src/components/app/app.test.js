@@ -1,13 +1,12 @@
 import React from "react";
-import {render, screen} from "@testing-library/react";
+import {render} from "@testing-library/react";
 import '@testing-library/jest-dom';
-import App from "../app/app";
+import App from "./app";
 
-describe('App', () => {
-    test('renders App component', async () => {
-        render(<App />);
-
-        expect(screen.getByText("sosi loh")).toBeInTheDocument();
+describe("<App/>", () => {
+    it("Renders without crashing", () => {
+        const { getByText } = render(<App />);
+        expect(getByText(/Birthday App/i)).toBeInTheDocument();
     });
 });
 
