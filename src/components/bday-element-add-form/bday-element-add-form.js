@@ -3,9 +3,7 @@ import { errorClass, toFormalise } from "../../logic/add-form-helper";
 import { validateDate } from "../../logic/date-helper";
 import "./bday-element-add-form.css"; 
 
-
 export default class BdayElementAddForm extends Component {
-
     state = {
         name: "",
         surname: "",
@@ -82,7 +80,11 @@ export default class BdayElementAddForm extends Component {
         this.setState({
             name: "",
             surname: "",
-            fullDate: ""
+            fullDate: "",
+            isNameValid: false,
+            isSurnameValid: false,
+            isFullDateValid: false,
+            isFormValid: false
         });
     };
 
@@ -97,7 +99,7 @@ export default class BdayElementAddForm extends Component {
                         type="text"
                         placeholder="Name"
                         autoComplete="off"
-                        className={`form-control ${errorClass(this.state.formErrors.name)} add-name`}
+                        className={`form-control${errorClass(this.state.formErrors.name)} add-name`}
                         name="name"
                         value={name}
                         onChange={this.onNameChange} />
@@ -111,7 +113,7 @@ export default class BdayElementAddForm extends Component {
                         type="text"
                         placeholder="Surname"
                         autoComplete="off"
-                        className={`form-control ${errorClass(this.state.formErrors.surname)} add-surname`}
+                        className={`form-control${errorClass(this.state.formErrors.surname)} add-surname`}
                         name="surname"
                         value={surname}
                         onChange={this.onNameChange} />
@@ -123,10 +125,11 @@ export default class BdayElementAddForm extends Component {
                 <div>
                     <input
                         type="date"
-                        className={`form-control ${errorClass(this.state.formErrors.fullDate)} add-date`}
+                        className={`form-control${errorClass(this.state.formErrors.fullDate)} add-date`}
                         name="fullDate"
                         value={fullDate}
-                        onChange={this.onDateChange} />
+                        onChange={this.onDateChange}
+                        data-testid="input-date" />
                     <div className="invalid-feedback">
                         {this.state.formErrors.fullDate}
                     </div>  
