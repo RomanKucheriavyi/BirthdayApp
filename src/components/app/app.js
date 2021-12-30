@@ -7,14 +7,13 @@ import Searcher from "../searcher/searcher";
 import "./app.css";
 import { createBdayItem, filterItems, searchPerson } from "../../logic/app-helper";
 
-
 export default class App extends Component {
 
     state = {
         birthdayData:[
-            createBdayItem("Xuy", "Pizda", "1488-10-22"),
-            createBdayItem("Loh", "Pidr", "1984-11-21"),
-            createBdayItem("Grh", "Goroh", "1337-5-21")
+            createBdayItem("Foo", "Bar", "1988-01-22"),
+            createBdayItem("Waaa", "Mda", "1998-11-21"),
+            createBdayItem("Grh", "Goroh", "2007-12-25")
         ],
         searchText: "",
         filter: "all"
@@ -72,6 +71,8 @@ export default class App extends Component {
         );
     };
 };
+
+
 
 
 

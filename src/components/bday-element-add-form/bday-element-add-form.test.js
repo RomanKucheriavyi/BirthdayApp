@@ -18,7 +18,7 @@ describe("<BdayElementAddForm />", () => {
     });
 
     it("calls onSubmit function only one time with valid inputs", () => {
-        render(<BdayElementAddForm onAdd = {onSubmit}/>);
+        render(<BdayElementAddForm onAdd = {onSubmit} />);
 
         expect(queryByText(/name is too short/i)).toBeNull();
         expect(queryByText(/surname is too short/i)).toBeNull();

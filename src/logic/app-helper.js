@@ -13,7 +13,7 @@ export function createBdayItem (name, surname, fullDate){
 
 export function searchPerson(birthdayData, searchText){
     if (searchText.length === 0){
-        return birthdayData
+        return birthdayData;
     }
     return birthdayData.filter((item) => {
         return (item.name
@@ -22,7 +22,7 @@ export function searchPerson(birthdayData, searchText){
         || (item.surname
                 .toLowerCase()
                 .indexOf(searchText.toLowerCase()) > -1)
-    })
+    });
 };
 
 export function filterItems(birthdayData, filter) {
